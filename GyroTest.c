@@ -1,3 +1,24 @@
+/*
+   RM-G146 library for AVR
+   Written by Pedram Azimaie <carp3co@gmail.com>
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2 of the License, or (at your option) any later version.
+
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the
+   Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+   Boston, MA 02111-1307, USA.
+*/
+
+// Atmega32A@8MHz 
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -17,41 +38,35 @@ static int uart_putchar(char c, FILE *stream);
 static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL,
                                              _FDEV_SETUP_WRITE);
 
-int16_t x,y,z;
+
 vector v;
 
 
-uint16_t temp;
+
 
 
 double sss;
 
 int main(void)
     {
-	  TWBR = 32;
-      init();
-	  TWBR = 32;
-      stdout = &mystdout;
+	TWBR = 32; // Init I2C (100KHz@8MHz)
+    init();
+
+    stdout = &mystdout;
 	printf("Initing....");
-	 _delay_ms(1000);
+	_delay_ms(1000);
 	imu_g_init();
 	imu_a_init();
 	imu_m_init();
 	printf("Done\r\n");
+
 	_delay_ms(100);
 
-      while(1)
+    while(1)
 	{ 
-//	imu_g_read_data_raw(&x,&y,&z);
-imu_a_read_data_raw(&v);
-	//imu_g_read_temp(&temp);
-	printf("X%7i,Y%7i,Z%7i,R%7i,P%7i\r\n",v.x, v.y, v.z,raw_roll(&v),raw_pitch(&v));
+	imu_g_read_data_raw(&v);
+	printf("X%7i,Y%7i,Z%7i\r\n",v.x, v.y, v.z);
 
-//printf("0x%04x\r\n",x);
-//printf("%u\r\n",x);
-        //printf("%i\r\n",x);
-
-//	_delay_ms(100);
 
 	}
 

@@ -1,6 +1,8 @@
 #include <avr/io.h>
 #include "i2c.h"
 
+
+
 void i2c_transmit(char address, char reg, char data)
 {
 	TWCR = 0xA4;                                                  // send a start bit on i2c bus
